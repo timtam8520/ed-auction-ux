@@ -50,7 +50,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ed-auction-ux:build"
+            "browserTarget": "ed-auction-ux:build",
+            "port": 4000
           },
           "configurations": {
             "production": {
