@@ -1,0 +1,11 @@
+<div class="row"><h2>Products</h2></div>
+<div class="row product" *ngFor="let product of products">
+  <div class="col-2 productImage">
+    <img src="{{product.productImage}}" alt="{{product.productName}}">
+  </div>
+  <div class="col-6">
+    <h4>
+      {{product.productName}}
+    </h4>
+  </div>
+</div>
