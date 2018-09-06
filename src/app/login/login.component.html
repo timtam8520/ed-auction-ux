@@ -1,0 +1,23 @@
+<form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="form-signin">
+  <h1 class="h3 mb-3 font-weight-normal signin-header">Please sign in</h1>
+  <div class="form-group no-margin">
+    <label for="username" class="sr-only">Email address</label>
+    <input type="email" class="form-control" formControlName="username" placeholder="Email address" required autofocus
+      [ngClass]="{'is-invalid': submitted && loginForm.controls.username.errors}">
+    <div *ngIf="submitted && loginForm.controls.username.errors" class="invalid-feedback">
+      <div *ngIf="loginForm.controls.username.errors.required">Username is required</div>
+    </div>
+  </div>
+  <div class="form-group no-margin">
+    <label for="password" class="sr-only">Password</label>
+    <input type="password" class="form-control" formControlName="password" placeholder="Password" required [ngClass]="{'is-invalid': submitted && loginForm.controls.password.errors}">
+    <div *ngIf="submitted && loginForm.controls.password.errors" class="invalid-feedback">
+      <div *ngIf="loginForm.controls.password.errors.required">Password is required</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <button class="btn btn-lg btn-primary btn-block">Login</button>
+    <div *ngIf="loading">Loading</div>
+  </div>
+  <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+</form>
