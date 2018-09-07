@@ -1,5 +1,7 @@
 export class Product {
   productId: number;
-  productName: string;
   productImage: string;
+  productName: string;
+  productPrice: number;
+  productTimeLeft: number;    // in milliseconds
 }
