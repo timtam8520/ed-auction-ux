@@ -10,7 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { Routing } from './app.routes';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AuthenticationInterceptor } from './services/authentication/authentication.interceptor';
+import { AuthenticationInterceptor } from './shared/services/authentication/authentication.interceptor';
 
 @NgModule({
   declarations: [
