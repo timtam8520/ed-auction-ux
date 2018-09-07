@@ -18,4 +18,8 @@ export class AppComponent {
   get isLoggedIn () {
     return this.authenticationService.isLoggedIn;
   }
+
+  get name() {
+    return this.authenticationService.getUserName();
+  }
 }

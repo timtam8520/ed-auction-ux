@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { tokenName } from './authentication.base';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class AuthenticationService {
   private authenticationURL = BASE_URL + '/users/authenticate';
 
   isLoggedIn = false;
+  name = '';
 
   constructor(private http: HttpClient, private router: Router) {
     if (localStorage.getItem(tokenName)) {
@@ -25,14 +27,15 @@ export class AuthenticationService {
 
   login(username: string, password: string) {
     return this.http.post<any>(this.authenticationURL, { username, password })
-      .pipe(map(user => {
+      .pipe(map(data => {
         // login is successful
-        if (user && user.token) {
+        if (data && data.token) {
+          const token = data.token;
           // store user token in localStorage to persist between refreshes
-          localStorage.setItem(tokenName, JSON.stringify(user));
+          localStorage.setItem(tokenName, token);
           this.isLoggedIn = true;
         }
-        return user;
+        return data;
       }));
   }
 
@@ -41,5 +44,17 @@ export class AuthenticationService {
     localStorage.removeItem(tokenName);
     this.router.navigate(['/login']);
     this.isLoggedIn = false;
+    this.name = '';
+  }
+
+  getUserName() {
+    if (this.name === '') {
+      const token = localStorage.getItem(tokenName);
+      const userData = jwt.decode(token);
+      if (userData != null) {
+        this.name = `${userData['firstName']} ${userData['lastName']}`;
+      }
+    }
+    return this.name;
   }
 }

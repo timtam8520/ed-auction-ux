@@ -11,12 +11,12 @@ export class AuthenticationInterceptor implements HttpInterceptor {
   constructor(private authService: AuthenticationService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const loggedInUser = JSON.parse(localStorage.getItem(tokenName));
+    const token = localStorage.getItem(tokenName);
     // Attach token before sending request
-    if (loggedInUser && loggedInUser.token) {
+    if (token) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${loggedInUser.token}`
+          Authorization: `Bearer ${token}`
         }
       });
     }
