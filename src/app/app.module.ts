@@ -6,6 +6,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { ProductsListComponent } from './products-list/products.list.component';
 import { ProductComponent } from './products-list/product/product.component';
+import { ProductDetailsComponent } from './products-list/product/product-details/product-details.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { Routing } from './app.routes';
@@ -19,6 +20,7 @@ import { AuthenticationInterceptor } from './shared/services/authentication/auth
     ProductComponent,
     LoginComponent,
     HomeComponent,
+    ProductDetailsComponent,
   ],
   imports: [
     BrowserModule,
