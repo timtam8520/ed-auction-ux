@@ -20,7 +20,11 @@ export class ProductComponent implements OnInit {
     this.countdown();
   }
 
-  get productAuctionOpen (): boolean {
+  get latestPrice() {
+    return this.product.latestProductBidPrice || this.product.initialProductPrice;
+  }
+
+  get productAuctionOpen() {
     return this.timeLeft.asSeconds() > 0;
   }
 
