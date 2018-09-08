@@ -10,10 +10,7 @@ import { Observable } from 'rxjs';
 export class ProductService {
   private productsURL = BASE_URL + '/products';
 
-  constructor(
-    private http: HttpClient
-  ) {
-    this.http = http;
+  constructor(private http: HttpClient) {
   }
 
   getProducts(): Observable<Product[]> {
