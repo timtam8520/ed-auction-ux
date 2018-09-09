@@ -1,3 +1,75 @@
-<p>
-  product-details works!
-</p>
+<div class="row card" *ngIf="product">
+  <div class="col-12">
+    <div class="row">
+      <div class="col-4 productImage">
+        <img class="rounded" src="{{product.productImage}}" alt="{{product.productName}}">
+      </div>
+      <div class="col-8">
+        <div class="row">
+          <div class="col-6">
+            <div class="row">
+              <div class="col-12">
+                <h1>
+                  {{product.productName}}
+                </h1>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <h3>
+                  {{latestPrice | currency: 'USD'}}
+                </h3>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-8">
+                <p class="text-muted"> {{product.productBids}} bids</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 d-flex justify-content-end">
+            <div class="row">
+              <div class="col-12">
+                <h3 *ngIf="productAuctionOpen; else productAuctionEnded" [ngClass]="{'text-danger': timeLeft.asSeconds() < 60, 'text-primary': timeLeft.asSeconds() < 300}">
+                  <ng-container *ngIf="timeLeft.hours()">
+                    {{timeLeft.hours()}}h
+                  </ng-container>
+                  <ng-container *ngIf="timeLeft.minutes()">
+                    {{timeLeft.minutes()}}m
+                  </ng-container>
+                  {{timeLeft.seconds()}}s left
+                </h3>
+                <ng-template #productAuctionEnded>
+                  <h4 class="text-muted">
+                    Auction closed
+                  </h4>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <form [formGroup]="bidForm" (ngSubmit)="onBid()" class="bid-form">
+              <div class="form-group">
+                <label for="bidPrice" class="sr-only">Bid Price</label>
+                <input type="number" class="form-control" formControlName="bidPrice" required autofocus
+                [ngClass]="{'is-invalid': submitted && bidForm.controls.bidPrice.errors}">
+                <div *ngIf="bidForm.controls.bidPrice.errors" class="invalid-feedback">
+                  <div *ngIf="bidForm.controls.bidPrice.errors.required">Bid is required</div>
+                  <div *ngIf="bidForm.controls.bidPrice.errors.min">Enter {{latestPrice + 0.01}} or more</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <button class="btn btn-lg btn-primary btn-block">Place bid</button>
+                <div *ngIf="loading">Placing bid</div>
+              </div>
+              <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr class="my-4">
