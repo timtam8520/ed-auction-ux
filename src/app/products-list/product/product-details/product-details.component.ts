@@ -44,8 +44,8 @@ export class ProductDetailsComponent implements OnInit {
   onBid() {
     this.submitted = true;
 
-    // stop if the form is invalid;
-    if (this.bidForm.invalid) {
+    // stop if the form is invalid or the auction has ended
+    if (this.bidForm.invalid || !this.productAuctionOpen) {
       return;
     }
 

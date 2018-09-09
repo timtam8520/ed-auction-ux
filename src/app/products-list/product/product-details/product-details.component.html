@@ -41,7 +41,7 @@
                 </h3>
                 <ng-template #productAuctionEnded>
                   <h4 class="text-muted">
-                    Auction closed
+                    Auction ended
                   </h4>
                 </ng-template>
               </div>
@@ -53,15 +53,16 @@
             <form [formGroup]="bidForm" (ngSubmit)="onBid()" class="bid-form">
               <div class="form-group">
                 <label for="bidPrice" class="sr-only">Bid Price</label>
-                <input type="number" class="form-control" formControlName="bidPrice" required autofocus
-                [ngClass]="{'is-invalid': submitted && bidForm.controls.bidPrice.errors}">
+                <input type="number" class="form-control" formControlName="bidPrice"
+                [ngClass]="{'is-invalid': submitted && bidForm.controls.bidPrice.errors}"
+                [attr.disabled]="!productAuctionOpen ? '' : null" required autofocus>
                 <div *ngIf="bidForm.controls.bidPrice.errors" class="invalid-feedback">
                   <div *ngIf="bidForm.controls.bidPrice.errors.required">Bid is required</div>
                   <div *ngIf="bidForm.controls.bidPrice.errors.min">Enter {{latestPrice + 0.01}} or more</div>
                 </div>
               </div>
               <div class="form-group">
-                <button class="btn btn-lg btn-primary btn-block">Place bid</button>
+                <button class="btn btn-lg btn-primary btn-block" [disabled]="!productAuctionOpen">Place bid</button>
                 <div *ngIf="loading">Placing bid</div>
               </div>
               <div *ngIf="error" class="alert alert-danger">{{error}}</div>
