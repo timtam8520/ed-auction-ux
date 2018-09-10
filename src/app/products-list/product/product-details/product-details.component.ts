@@ -21,8 +21,12 @@ export class ProductDetailsComponent implements OnInit {
   MIN_BID_DIFF = 0.01;
 
   timeLeft = moment.duration(0);
-  intervalRefresh = 1000;
-  interval = null;
+  countdownIntervalRefresh = 1000;
+  countdownInterval = null;
+
+  auctionStatus = 'Loading...';
+  auctionStatusIntervalRefresh = 5000;
+  auctionStatusInterval = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,6 +37,12 @@ export class ProductDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.getProduct();
+  }
+
+  refresh() {
+    this.ngOnInit();
+    clearInterval(this.countdownInterval);
+    clearInterval(this.auctionStatusInterval);
   }
 
   createBidForm() {
@@ -52,10 +62,10 @@ export class ProductDetailsComponent implements OnInit {
     const bidPrice = this.bidForm.controls.bidPrice.value;
     this.bidService.placeBid(this.product.productId, bidPrice)
       .subscribe(
-        res => {
-          console.log(res);
+        () => {
           this.submitted = false;
-          this.ngOnInit();
+          this.error = null;
+          this.refresh();
         },
         err => this.error = err
       );
@@ -67,6 +77,7 @@ export class ProductDetailsComponent implements OnInit {
       this.product = p;
       this.createBidForm();
       this.countdown();
+      this.status();
     });
   }
 
@@ -83,13 +94,33 @@ export class ProductDetailsComponent implements OnInit {
     let currentTime = moment(Date.now());
     this.timeLeft = moment.duration(auctionCloseTime.diff(currentTime));
 
-    this.interval = setInterval(() => {
+    this.countdownInterval = setInterval(() => {
       currentTime = moment(Date.now());
       this.timeLeft = moment.duration(auctionCloseTime.diff(currentTime));
       if (this.timeLeft.asSeconds() < 0) {
-        clearInterval(this.interval);
+        clearInterval(this.countdownInterval);
+        clearInterval(this.auctionStatusInterval);
+        this.status();
       }
-    }, 1000);
+    }, this.countdownIntervalRefresh);
+  }
+
+  status() {
+    this.getStatus();
+    this.auctionStatusInterval = setInterval(() => this.getStatus(), this.auctionStatusIntervalRefresh);
+  }
+
+  getStatus() {
+    this.bidService.status(this.product.productId)
+      .subscribe((res: any) => {
+        const newStatus = res.status;
+        if (this.auctionStatus !== newStatus) {
+          this.auctionStatus = newStatus;
+          this.refresh();
+        } else {
+          this.auctionStatus = newStatus;
+        }
+      });
   }
 
 }

@@ -27,7 +27,7 @@
               </div>
             </div>
           </div>
-          <div class="col-6 d-flex justify-content-end">
+          <div class="col-6 auctionStatus">
             <div class="row">
               <div class="col-12">
                 <h3 *ngIf="productAuctionOpen; else productAuctionEnded" [ngClass]="{'text-danger': timeLeft.asSeconds() < 60, 'text-primary': timeLeft.asSeconds() < 300}">
@@ -44,6 +44,11 @@
                     Auction ended
                   </h4>
                 </ng-template>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <h6>{{auctionStatus}}</h6>
               </div>
             </div>
           </div>

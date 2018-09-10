@@ -8,6 +8,11 @@
     max-width: 100%;
   }
 }
+.auctionStatus {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
 
 .bid-form {
   padding: 15px;
